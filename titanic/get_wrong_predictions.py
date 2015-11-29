@@ -10,6 +10,7 @@ import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+import matplotlib.pyplot as plt
 
 from features import train, test
 
@@ -40,4 +41,28 @@ for model in algorithms:
         diff.append(wrong)        
         
 
-    
+
+tclass = diff[0].groupby(["Pclass", "predicted_class"]).size().unstack()
+
+
+red, blue = '#B2182B', '#2166AC'
+
+plt.subplot(121)
+plt.bar([0, 1, 2], tclass[0], color=red, label='Died')
+plt.bar([0, 1, 2], tclass[1], bottom=tclass[0], color=blue, label='Survived')
+plt.xticks([0.5, 1.5, 2.5], ['1st Class', '2nd Class', '3rd Class'], rotation='horizontal')
+plt.ylabel("Number")
+plt.xlabel("")
+plt.legend(loc='upper left')
+
+#normalize each row by transposing, normalizing each column, and un-transposing
+tclass = (1. * tclass.T / tclass.T.sum()).T
+
+plt.subplot(122)
+plt.bar([0, 1, 2], tclass[0], color=red, label='Died')
+plt.bar([0, 1, 2], tclass[1], bottom=tclass[0], color=blue, label='Survived')
+plt.xticks([0.5, 1.5, 2.5], ['1st Class', '2nd Class', '3rd Class'], rotation='horizontal')
+plt.ylabel("Fraction")
+plt.xlabel("")
+
+plt.show()
