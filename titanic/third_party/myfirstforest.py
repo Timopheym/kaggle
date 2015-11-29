@@ -8,11 +8,13 @@ please see packages.python.org/milk/randomforests.html for more
 import pandas as pd
 import numpy as np
 import csv as csv
+from sklearn import metrics
+from sklearn import cross_validation
 from sklearn.ensemble import RandomForestClassifier
 
 # Data cleanup
 # TRAIN DATA
-train_df = pd.read_csv('train.csv', header=0)        # Load the train file into a dataframe
+train_df = pd.read_csv('../data/train.csv', header=0)        # Load the train file into a dataframe
 
 # I need to convert all strings to integer classifiers.
 # I need to fill in the missing values of the data and make it complete.
@@ -41,7 +43,7 @@ train_df = train_df.drop(['Name', 'Sex', 'Ticket', 'Cabin', 'PassengerId'], axis
 
 
 # TEST DATA
-test_df = pd.read_csv('test.csv', header=0)        # Load the test file into a dataframe
+test_df = pd.read_csv('../data/test.csv', header=0)        # Load the test file into a dataframe
 
 # I need to do the same with the test data now, so that the columns are the same as the training data
 # I need to convert all strings to integer classifiers:
@@ -82,12 +84,33 @@ test_data = test_df.values
 
 
 print('Training...')
-forest = RandomForestClassifier(n_estimators=100)
-forest = forest.fit( train_data[0::,1::], train_data[0::,0] )
-output = forest.predict(train_data).astype(int)
+X = train_data[0::,1::]
+expected = y = train_data[0::,0] 
 
-print('Predicting...')
-output = forest.predict(test_data).astype(int)
+model = RandomForestClassifier(n_estimators=100)
+model.fit(X, y)
+predicted = model.predict(X)
+
+print(metrics.classification_report(expected, predicted))
+print(metrics.confusion_matrix(expected, predicted))
+print(model.score(X, y))
+print("-----------------------------------------")
+print(round(model.score(X, y), 2))
+
+scores=cross_validation.cross_val_score(RandomForestClassifier(n_estimators=100),
+                                        X, 
+                                        y, 
+                                        scoring=None, 
+                                        cv=None, 
+                                        n_jobs=1, 
+                                        verbose=0, 
+                                        fit_params=None, 
+                                        pre_dispatch='2*n_jobs')
+
+print(scores.mean())
+
+#print('Predicting...')
+#output = forest.predict(test_data).astype(int)
 
 #predictions_file = open("myfirstforest.csv", "wb")
 #open_file_object = csv.writer(predictions_file)
