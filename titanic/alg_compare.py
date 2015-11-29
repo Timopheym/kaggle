@@ -1,6 +1,5 @@
 # загрузить отсортированные входные данные и установить предикторы
 # получить оценки по алгоритмам
-import pandas as pd
 from pandas import Series,DataFrame
 import numpy as np
 from sklearn.svm import SVC, LinearSVC
@@ -12,14 +11,14 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 from sklearn import cross_validation
+from features import train, test
 import matplotlib.pyplot as plt
 
-titanic = pd.read_csv("titanic.csv")
 
-X_train = titanic.drop("Survived",axis=1)
+X_train = train.drop("Survived",axis=1)
 predictors = ["Pclass"]
-X = titanic[predictors] 
-y = titanic["Survived"]
+X = train[predictors] 
+y = train["Survived"]
 
 a1 = GaussianNB()
 a2 = KNeighborsClassifier(n_neighbors=3) 
