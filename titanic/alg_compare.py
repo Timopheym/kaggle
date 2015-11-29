@@ -3,11 +3,13 @@
 import pandas as pd
 from pandas import Series,DataFrame
 import numpy as np
-from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC, LinearSVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 from sklearn import cross_validation
 import matplotlib.pyplot as plt
@@ -18,19 +20,6 @@ X_train = titanic.drop("Survived",axis=1)
 predictors = ["Pclass"]
 X = titanic[predictors] 
 y = titanic["Survived"]
-
-def f_class(model, X,y):
-    scores=cross_validation.cross_val_score(model, X, y, scoring=None,
-                                            cv=3, n_jobs=1, verbose=0, fit_params=None, pre_dispatch='2*n_jobs')
-    return scores.mean()
-
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import GradientBoostingClassifier
 
 a1 = GaussianNB()
 a2 = KNeighborsClassifier(n_neighbors=3) 
