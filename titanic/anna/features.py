@@ -16,11 +16,12 @@ test = pd.read_csv("test.csv")
 
 std_age = train["Age"].std()
 mean_age = train["Age"].mean()
-train["Age"][np.isnan(train["Age"])] = np.random.randint(
-                                                     mean_age - std_age,
-                                                     mean_age + std_age, 
-                                                     size = train["Age"]
-                                                             .isnull().sum())
+train["Age"] = train["Age"].fillna(train["Age"].median()) 
+#train["Age"][np.isnan(train["Age"])] = np.random.randint(
+#                                                     mean_age - std_age,
+#                                                     mean_age + std_age, 
+#                                                     size = train["Age"]
+#                                                             .isnull().sum())
 train.loc[train["Sex"] == "male", "Sex"] = 0
 train.loc[train["Sex"] == "female", "Sex"] = 1
 
