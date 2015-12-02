@@ -15,7 +15,6 @@ from features import train, test
 
 import matplotlib.pyplot as plt
 
-
 X_train = train.drop("Survived",axis=1)
 predictors = ["Pclass", "Fare", "Title", 
               "FamilyId", "FamilySize", "Age",
