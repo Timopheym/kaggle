@@ -11,22 +11,23 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 from sklearn import cross_validation
+from sklearn import preprocessing
 from features import train, test
 
 import matplotlib.pyplot as plt
 
 
 X_train = train.drop("Survived",axis=1)
-predictors = ["Pclass", "Fare", "Title", 
-              "FamilyId", "FamilySize", "Age",
-              "Embarked"]
+predictors = ["Pclass", "Fare", "Title", "Sex", "FamilySize"]
 
 X = train[predictors] 
 y = train["Survived"]
 
+X = preprocessing.scale(X)
+
 a1 = GaussianNB()
 a2 = KNeighborsClassifier(n_neighbors=3) 
-a3 = SVC()
+a3 = SVC(kernel="poly", gamma=3, cache_size=500, C = 0.8)
 a4 = LogisticRegression()
 a5 = DecisionTreeClassifier()
 a6 = GradientBoostingClassifier(random_state=1, n_estimators=25, max_depth=3)
@@ -34,6 +35,7 @@ a7 = RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=
  
 algorithms=[a1, a2, a3, a4, a5, a6, a7]
 d=[]
+i = 0
 for model in algorithms:
     scores=cross_validation.cross_val_score(model, X, y, scoring=None,
                                             cv=3, n_jobs=1, verbose=0, fit_params=None, pre_dispatch='2*n_jobs')

@@ -22,9 +22,8 @@ mean_age = train["Age"].mean()
 #                                                     size = train["Age"]
 #                                                             .isnull().sum())
 
-train["Age"][np.isnan(train["Age"])] = mean_age
-test["Age"][np.isnan(test["Age"])] = mean_age
-
+train["Age"] = train["Age"].fillna(mean_age)
+test["Age"] = test["Age"].fillna(mean_age)
 train.loc[train["Sex"] == "male", "Sex"] = 0
 train.loc[train["Sex"] == "female", "Sex"] = 1
 
