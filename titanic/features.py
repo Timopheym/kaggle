@@ -14,18 +14,23 @@ train = pd.read_csv("data/train.csv")
 test = pd.read_csv("data/test.csv")
 #AGE and SEX
 
-std_age = train["Age"].std()
+#std_age = train["Age"].std()
 mean_age = train["Age"].mean()
-train["Age"][np.isnan(train["Age"])] = np.random.randint(
-                                                     mean_age - std_age,
-                                                     mean_age + std_age, 
-                                                     size = train["Age"]
-                                                             .isnull().sum())
+#train["Age"][np.isnan(train["Age"])] = np.random.randint(
+#                                                     mean_age - std_age,
+#                                                     mean_age + std_age, 
+#                                                     size = train["Age"]
+#                                                             .isnull().sum())
+
+train["Age"][np.isnan(train["Age"])] = mean_age
+test["Age"][np.isnan(test["Age"])] = mean_age
+
 train.loc[train["Sex"] == "male", "Sex"] = 0
 train.loc[train["Sex"] == "female", "Sex"] = 1
 
 #Get children 
 train.loc[train["Age"] < 16, "Sex"] = 2
+test.loc[test["Age"] < 16, "Sex"] = 2
 
 train["Embarked"] = train["Embarked"].fillna("S")
 train.loc[train["Embarked"] == "S", "Embarked"] = 0
